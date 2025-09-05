@@ -12,13 +12,11 @@ Route::middleware('guest')->group(function () {
     Route::get('/auth/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::middleware(Authenticate::class)->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/settings', function () {
         return view('settings');
     })->name('settings');
-
-Route::middleware(Authenticate::class)->group(function () {
-    
     Route::get('/logout', [AuthController::class, 'logout']);
 });
 
